@@ -15,16 +15,19 @@ function Login({ setIsLoggedIn }) {
 
   async function login() {
     try {
-      const result = await fetch("http://localhost:8080/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: data.username,
-          password: data.password,
-        }),
-      });
+      const result = await fetch(
+        "https://mern-todo-app-backend-wstm.onrender.com/api/users/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: data.username,
+            password: data.password,
+          }),
+        }
+      );
       if (result.ok && result.status >= 200 && result.status < 400) {
         const user = await result.json();
         localStorage.setItem("userId", JSON.stringify(user.user._id));

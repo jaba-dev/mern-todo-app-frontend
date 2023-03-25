@@ -15,16 +15,19 @@ function Signup() {
 
   async function signup() {
     try {
-      const result = await fetch("http://localhost:8080/api/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: data.username,
-          password: data.password,
-        }),
-      });
+      const result = await fetch(
+        "https://mern-todo-app-backend-wstm.onrender.com/api/users/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: data.username,
+            password: data.password,
+          }),
+        }
+      );
       setData({
         username: "",
         password: "",

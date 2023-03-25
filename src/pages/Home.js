@@ -24,12 +24,15 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
 
   async function getTodos() {
     if (token && userId) {
-      const result = await fetch(`http://localhost:8080/api/users/${userId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-      });
+      const result = await fetch(
+        `https://mern-todo-app-backend-wstm.onrender.com/api/users/${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await result.json();
       if (data) {
         setTodos(data.todos);
@@ -44,7 +47,7 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
     async function addNewTodo() {
       try {
         const result = await fetch(
-          `http://localhost:8080/api/users/${userId}/todos`,
+          `https://mern-todo-app-backend-wstm.onrender.com/api/users/${userId}/todos`,
           {
             method: "POST",
             headers: {
@@ -125,7 +128,7 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
   async function deleteTodo(todoId) {
     try {
       const result = await fetch(
-        `http://localhost:8080/api/users/${userId}/todos/${todoId}`,
+        `https://mern-todo-app-backend-wstm.onrender.com/api/users/${userId}/todos/${todoId}`,
         {
           method: "DELETE",
           headers: {
