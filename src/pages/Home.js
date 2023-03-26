@@ -164,7 +164,7 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
       {isLoggedIn && window.innerWidth > 800 ? (
         <Logout token={token} setIsLoggedIn={setIsLoggedIn} />
       ) : null}
-      {isLoggedIn && <h2>{userName ? `Welcome ${userName}!` : null}</h2>}
+      {isLoggedIn && <h2>{userName ? `Welcome ${userName}!` : ""}</h2>}
       {isLoggedIn && <AddTodo />}
       {isLoggedIn && todos.length > 0 ? (
         <div className="todo-container">
@@ -172,11 +172,11 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
             todos.map((item) => {
               return (
                 <div
-                  className={item.completed ? "completed" : null}
+                  className={item.completed ? "completed" : ""}
                   key={item.id}
                 >
                   <span>
-                    {item.todo} {item.completed ? "done" : null}
+                    {item.todo} {item.completed ? "done" : ""}
                   </span>
                   <FaCheck
                     className="check"
@@ -196,7 +196,9 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
               );
             })}
         </div>
-      ) : null}
+      ) : (
+        ""
+      )}
     </div>
   );
 }

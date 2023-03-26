@@ -40,9 +40,7 @@ function Signup() {
         document.cookie =
           "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         setData({
-          username: "",
-          password: "",
-          confirm: "",
+          ...data,
           success: "user registered successfully!",
         });
 
@@ -59,7 +57,8 @@ function Signup() {
       });
       resetData();
     } catch (error) {
-      console.log(error.message);
+      setData({ ...data, error: "something went wrong" });
+      resetData();
     }
   }
 
@@ -75,11 +74,34 @@ function Signup() {
     }, 2000);
   }
 
+  function validate(name, password) {
+    if (name.length < 5) {
+      setData({
+        ...data,
+        error: "username must containe at least 5 characters",
+      });
+      resetData();
+    }
+    const passwordPattern = /^[\d\w@-]{8,20}$/i;
+    let isValidPassword = passwordPattern.test(password);
+    if (!isValidPassword) {
+      setData({
+        ...data,
+        error:
+          "Password must alphanumeric (@, _ and - are also allowed) and be 8 - 20 characters",
+      });
+    }
+    return isValidPassword;
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     if (data.username && data.password) {
       if (data.password === data.confirm) {
-        signup();
+        let isValid = validate(data.username, data.password);
+        if (isValid) {
+          signup();
+        }
       } else {
         setData({ ...data, error: "please fill neccessary fields" });
         resetData();
@@ -93,13 +115,12 @@ function Signup() {
   return (
     <form className="signup-form" onSubmit={handleSubmit}>
       <label htmlFor="username">username</label>
-
       <input
         id="username"
         type="text"
         name="username"
         value={data.username}
-        placeholder="your name"
+        placeholder="username"
         onChange={handleChange}
       />
       <label htmlFor="password">password</label>

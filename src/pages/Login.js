@@ -41,12 +41,13 @@ function Login({ setIsLoggedIn }) {
           navigate("/");
         }, 1500);
         reset();
-      } else {
+      } else if (!result.ok && result.status >= 400) {
         setData({ ...data, error: "username or password incorrect!" });
         reset();
       }
     } catch (error) {
-      console.log(error.message);
+      setData({ ...data, error: "username or password incorrect!" });
+      reset();
     }
   }
 
@@ -78,7 +79,7 @@ function Login({ setIsLoggedIn }) {
         type="text"
         name="username"
         value={data.username}
-        placeholder="your name"
+        placeholder="username"
         onChange={handleChange}
       />
       <label htmlFor="password">password</label>
