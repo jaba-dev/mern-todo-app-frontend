@@ -7,6 +7,7 @@ function Login({ setIsLoggedIn }) {
     password: "",
     error: "",
     success: "",
+    info: "",
   });
   const navigate = useNavigate();
   function handleChange(e) {
@@ -14,6 +15,7 @@ function Login({ setIsLoggedIn }) {
   }
 
   async function login() {
+    setData({ ...data, info: "processing..." });
     try {
       const result = await fetch(
         "https://mern-todo-app-backend-wstm.onrender.com/api/users/login",
@@ -58,6 +60,7 @@ function Login({ setIsLoggedIn }) {
         password: "",
         error: "",
         success: "",
+        info: "",
       });
     }, 2000);
   }
@@ -93,6 +96,7 @@ function Login({ setIsLoggedIn }) {
       />
       {data.success && <p className="success-text">{data.success}</p>}
       {data.error && <p className="error-text">{data.error}</p>}
+      {data.info && <p className="info-text">{data.info}</p>}
       <button type="submit">login</button>
     </form>
   );

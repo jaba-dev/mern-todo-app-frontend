@@ -14,6 +14,7 @@ function Signup() {
   }
 
   async function signup() {
+    setData({ ...data, info: "processing..." });
     try {
       const result = await fetch(
         "https://mern-todo-app-backend-wstm.onrender.com/api/users/signup",
@@ -28,13 +29,7 @@ function Signup() {
           }),
         }
       );
-      setData({
-        username: "",
-        password: "",
-        confirm: "",
-        error: "",
-        success: "",
-      });
+      resetData();
       if (result.ok) {
         localStorage.removeItem("userId");
         document.cookie =
@@ -50,9 +45,7 @@ function Signup() {
         resetData();
       }
       setData({
-        username: "",
-        password: "",
-        confirm: "",
+        ...data,
         error: "username or password is already used!",
       });
       resetData();
@@ -70,6 +63,7 @@ function Signup() {
         confirm: "",
         error: "",
         success: "",
+        info: "",
       });
     }, 2000);
   }
@@ -143,6 +137,7 @@ function Signup() {
       />
       {data.success && <p className="success-text">{data.success}</p>}
       {data.error && <p className="error-text">{data.error}</p>}
+      {data.info && <p className="info-text">{data.info}</p>}
       <button type="submit">signup</button>
     </form>
   );

@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
+import SomethingWentWrong from "./pages/SomethingWentWrong";
 
 function App() {
   function MenuIcon() {
@@ -65,6 +66,7 @@ function App() {
             element={<Login setIsLoggedIn={setIsLoggedIn} />}
           />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/somethingwentwrong" element={<SomethingWentWrong />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

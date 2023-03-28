@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { FaCheck, FaTrash } from "react-icons/fa";
 import Logout from "../components/Logout";
@@ -10,6 +11,8 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
   const [token, setToken] = useState("");
   const [errorText, setErrorText] = useState("");
   const [successText, setSuccessText] = useState("");
+  const [infoText, setInfoText] = useState("");
+  const navigate = useNavigate();
   const userId = JSON.parse(localStorage.getItem("userId"));
   useEffect(() => {
     if (userId) {
@@ -45,6 +48,7 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
   function AddTodo() {
     const [newTodo, setNewTodo] = useState("");
     async function addNewTodo() {
+      setInfoText("processing...");
       try {
         const result = await fetch(
           `https://mern-todo-app-backend-wstm.onrender.com/api/users/${userId}/todos`,
@@ -62,13 +66,20 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
         const data = await result.json();
         setTodos(data.todos);
         setNewTodo("");
-      } catch (err) {}
+        setInfoText("");
+        setSuccessText("todo added successfully");
+        reset();
+      } catch (err) {
+        setErrorText("something went wrong");
+        reset();
+      }
     }
 
     function reset() {
       setTimeout(() => {
         setErrorText("");
         setSuccessText("");
+        setInfoText("");
       }, 2000);
     }
 
@@ -79,8 +90,6 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
       e.preventDefault();
       if (newTodo) {
         addNewTodo();
-        setSuccessText("todo added successfully");
-        reset();
       } else {
         setErrorText("please enter something!");
         reset();
@@ -98,9 +107,9 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
             placeholder="new todo"
             onChange={handleChange}
           />
-          <p className={errorText ? "error-text" : "success-text"}>
-            {errorText ? errorText : successText}
-          </p>
+          {errorText && <p className="error-text">{errorText}</p>}
+          {successText && <p className="success-text">{successText}</p>}
+          {infoText && <p className="info-text">{infoText}</p>}
           <button className="add-btn">add todo</button>
         </form>
       </div>
@@ -109,8 +118,8 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
 
   async function updateTodo(todoId) {
     try {
-      const result = await fetch(
-        `http://localhost:8080/api/users/${userId}/todos/${todoId}/edit`,
+      await fetch(
+        `https://mern-todo-app-backend-wstm.onrender.com/api/users/${userId}/todos/${todoId}/edit`,
         {
           method: "PATCH",
           headers: {
@@ -119,9 +128,9 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
           },
         }
       );
-      const data = await result.json();
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+      navigate("/somethingwentwrong");
     }
   }
 
@@ -140,7 +149,7 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
       const data = await result.json();
       setTodos(data.todos);
     } catch (err) {
-      console.log("something went wrong", err);
+      navigate("/somethingwentwrong");
     }
   }
 
@@ -163,10 +172,12 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
     <div>
       {isLoggedIn && window.innerWidth > 800 ? (
         <Logout token={token} setIsLoggedIn={setIsLoggedIn} />
-      ) : null}
+      ) : (
+        ""
+      )}
       {isLoggedIn && <h2>{userName ? `Welcome ${userName}!` : ""}</h2>}
       {isLoggedIn && <AddTodo />}
-      {isLoggedIn && todos.length > 0 ? (
+      {isLoggedIn && todos.length ? (
         <div className="todo-container">
           {isLoggedIn &&
             todos.map((item) => {
@@ -197,7 +208,7 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
             })}
         </div>
       ) : (
-        ""
+        <p className="no-todos">no todos to display.</p>
       )}
     </div>
   );
