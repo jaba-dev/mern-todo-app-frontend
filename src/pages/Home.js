@@ -207,8 +207,10 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
               );
             })}
         </div>
-      ) : (
+      ) : isLoggedIn === true ? (
         <p className="no-todos">no todos to display.</p>
+      ) : (
+        ""
       )}
     </div>
   );
