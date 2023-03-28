@@ -43,12 +43,13 @@ function Signup() {
           navigate("/login");
         }, 1500);
         resetData();
+      } else {
+        setData({
+          ...data,
+          error: "username or password is already used!",
+        });
+        resetData();
       }
-      setData({
-        ...data,
-        error: "username or password is already used!",
-      });
-      resetData();
     } catch (error) {
       setData({ ...data, error: "something went wrong" });
       resetData();
