@@ -64,11 +64,19 @@ function Home({ setIsLoggedIn, isLoggedIn }) {
           }
         );
         const data = await result.json();
-        setTodos(data.todos);
-        setNewTodo("");
-        setInfoText("");
-        setSuccessText("todo added successfully");
-        reset();
+
+        if (data.todos) {
+          setTodos(data.todos);
+          setNewTodo("");
+          setInfoText("");
+          setSuccessText("todo added successfully");
+          reset();
+        } else {
+          setNewTodo("");
+          setInfoText("");
+          setErrorText(data);
+          reset();
+        }
       } catch (err) {
         setErrorText("something went wrong");
         reset();
